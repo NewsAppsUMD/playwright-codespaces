@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
 import os
+import shutil
 
 def main():
     url = "https://opendata.maryland.gov/stories/s/LMA-Solid-Waste-Program-Violation/rqzj-6qrm/"
@@ -37,10 +38,14 @@ def main():
                 # Get the downloaded file
                 download = download_info.value
 
-                # Save the downloaded file
+                # Get the path of the downloaded file
+                downloaded_file_path = download.path()
+
+                # Generate the desired filename for the PDF
                 pdf_filename = f"{pdf_id}.pdf"
-                with open(pdf_filename, "wb") as f:
-                    f.write(download.read())
+
+                # Move the downloaded file to the desired location with the new filename
+                shutil.move(downloaded_file_path, pdf_filename)
 
                 print(f"PDF downloaded: {pdf_filename}")
             else:
